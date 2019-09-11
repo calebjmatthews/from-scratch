@@ -3,7 +3,7 @@ module.exports = {
     './client/index.tsx'
   ],
 
-  mode: "production",
+  mode: "development",
 
   watch: true,
 

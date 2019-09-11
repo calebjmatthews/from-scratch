@@ -1,9 +1,25 @@
 import { SET_ALL_DECKS, SET_DECK, ADD_DECK, REMOVE_DECK, REVERT_DECK }
   from '../actions/decks';
 
+import Card from '../models/cards/card';
+import { Tab } from '../models/enums/tab';
+import { CardType } from '../models/enums/card_type';
+import { CardSubtype } from '../models/enums/card_subtype';
+
+let decks = [
+  new Card({
+    id: 0,
+    name: "Baby Pie",
+    usedIn: Tab.Kitchen,
+    type: CardType.Recipe,
+    subtype: null,
+    flavorText: "Small and simple, a good place to start."
+  })
+];
+
 export default function
-  (state: any = {
-    decks: [],
+  (state = {
+    decks: decks,
     lastDecks: []
   },
     action = null) {
@@ -32,19 +48,6 @@ export default function
           }
           return item;
         })
-      });
-      break;
-    case ADD_DECK:
-      return [...state, action.deck];
-      break;
-    case REMOVE_DECK:
-      return state.filter((item, index) => {
-        if (index == action.index) {
-          return false;
-        }
-        else {
-          return true;
-        }
       });
       break;
     case REVERT_DECK:

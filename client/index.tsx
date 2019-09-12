@@ -7,6 +7,9 @@ import configureStore from './store';
 const store = configureStore();
 import App from './containers/app';
 
+import './styles/root.css';
+import './styles/card.css';
+
 // @ts-ignore
 const createStoreWithMiddleware = applyMiddleware(createStore);
 

@@ -15,12 +15,13 @@ class App extends Component {
       <div className="card-container">
         <div className="card">
           <div className="card-header">
-            {card.name}
-            {card.usedIn}
-          </div>
-          <div className="card-subheader">
-            {card.type}
-            {card.subtype}
+            <div className="card-header-top">
+              <div>{card.name}</div>
+            </div>
+            <div className="card-header-bottom">
+              {card.type}
+              {card.subtype}
+            </div>
           </div>
           <div className="card-body">
             {`Complexity: *

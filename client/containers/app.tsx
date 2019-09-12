@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import Card from '../models/cards/card';
+import { utils } from '../models/utils';
 
 class App extends Component {
   componentWillMount() {
@@ -19,7 +20,7 @@ class App extends Component {
               <div>{card.name}</div>
             </div>
             <div className="card-header-bottom">
-              {card.type}
+              {utils.toFirstUpperCase(card.type)}
               {card.subtype}
             </div>
           </div>

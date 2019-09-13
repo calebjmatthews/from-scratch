@@ -3,21 +3,26 @@ import { connect } from 'react-redux';
 
 import Recipe from '../models/cards/recipe';
 import CookingAction from '../models/cards/cooking_action';
+import CardIndv from '../models/cards/card_indv';
+import { library } from '../instances/library';
 import { utils } from '../models/utils';
 
 class App extends Component {
   props: any;
 
   componentWillMount() {
-
+    console.log('library');
+    console.log(library);
+    console.log('this.props.decks');
+    console.log(this.props.decks);
   }
 
-  renderCard(card: Recipe&CookingAction) {
+  renderCard(card: Recipe|CookingAction, id: number) {
     return (
-        <div className="card" key={card.id}>
+        <div className="card" key={id}>
           <div className="card-header">
             <div className="card-header-top">
-              <div>{card.name}</div>
+              <div>{utils.toFirstUpperCase(card.name)}</div>
             </div>
             <div className="card-header-bottom">
               {card.getTypesLabel()}
@@ -36,11 +41,11 @@ class App extends Component {
   }
 
   render() {
-    let card: Recipe = this.props.decks.decks[0];
     return (
       <div className="card-container">
-        {this.props.decks.decks.map((card: Recipe&CookingAction) => {
-          return this.renderCard(card);
+        {this.props.decks.kitchen.map((cardIndv: CardIndv) => {
+          let card: Recipe|CookingAction = library.cardMap.get(cardIndv.name);
+          return this.renderCard(card, cardIndv.id);
         })}
       </div>
     );

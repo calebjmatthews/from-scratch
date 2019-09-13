@@ -4,7 +4,6 @@ import { CardType } from '../enums/card_type';
 import { CardSubtype } from '../enums/card_subtype';
 
 export default class Card implements CardInterface {
-  id: number;
   name: string;
   usedIn: Tab;
   type: CardType;
@@ -25,7 +24,6 @@ export default class Card implements CardInterface {
 }
 
 interface CardInterface {
-  id: number;
   name: string;
   usedIn: Tab;
   type: CardType;

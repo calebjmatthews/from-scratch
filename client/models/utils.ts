@@ -2,13 +2,34 @@ class Utils {
   // Formats a constant-style string to a human intended string,
   //  like "HELLO_WORLD!" => "Hello world!"
   toFirstUpperCase(aString: string): string {
-    aString = aString.replace('_', ' ');
+    aString = aString.replace(/_/g, ' ');
     return (aString.slice(0,1).toUpperCase() + aString.slice(1).toLowerCase());
   }
 
   range(size: number, startAt: number = 0) {
     return [...Array(size).keys()].map((integer) => integer + startAt);
   }
+
+  shuffle(array: any[]) {
+  let currentIndex: number = array.length;
+  let temporaryValue: any;
+  let randomIndex: number;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
 
   // Returns a maximum of two units of time, e.g. '1d 4h ' or '3m 45s ', with
   //  seconds being the smallest unit

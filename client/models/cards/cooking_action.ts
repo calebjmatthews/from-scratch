@@ -27,7 +27,6 @@ export default class CookingAction extends Card implements CookingActionInterfac
 }
 
 interface CookingActionInterface {
-  id: number;
   name: string;
   usedIn: Tab;
   type: CardType;

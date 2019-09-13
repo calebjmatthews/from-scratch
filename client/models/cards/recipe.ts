@@ -37,7 +37,6 @@ export default class Recipe extends Card implements RecipeInterface {
 }
 
 interface RecipeInterface {
-  id: number;
   name: string;
   usedIn: Tab;
   type: CardType;

@@ -64,7 +64,7 @@ Egg Wash
   Effects:
     12 Quality
     80 Completion
-    5% Rarity Chance
+    5% Premium Chance
   Flavor text: Finishing with an egg wash gives your crust that wonderful golden color.
 
 Hot Oven

@@ -1,6 +1,8 @@
 class Utils {
-  // Formats a string to a leading uppercase, like "HELLO" => "Hello"
+  // Formats a constant-style string to a human intended string,
+  //  like "HELLO_WORLD!" => "Hello world!"
   toFirstUpperCase(aString: string): string {
+    aString = aString.replace('_', ' ');
     return (aString.slice(0,1).toUpperCase() + aString.slice(1).toLowerCase());
   }
 

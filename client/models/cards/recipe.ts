@@ -15,11 +15,6 @@ export default class Recipe extends Card implements RecipeInterface {
     Object.assign(this, recipe);
   }
 
-  getTypesLabel() {
-    return (utils.toFirstUpperCase(this.type) + ' ('
-      + utils.toFirstUpperCase(this.subtype) + ')');
-  }
-
   getDescription() {
     let description: String[] = [];
 

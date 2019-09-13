@@ -6,14 +6,14 @@ import { CardSubtype } from '../enums/card_subtype';
 export default class CardRequirement implements CardRequirementInterface {
   type: CardType;
   subtype: CardSubtype;
-  quanitity: number;
+  quantity: number;
 
   constructor(cardRequirement: CardRequirementInterface) {
     Object.assign(this, cardRequirement);
   }
 
   getLabel() {
-    let label = '' + this.quanitity + ' ';
+    let label = '' + this.quantity + ' ';
     if (this.subtype != null) {
       label += utils.toFirstUpperCase(this.subtype) + ' ';
     }
@@ -28,5 +28,5 @@ export default class CardRequirement implements CardRequirementInterface {
 interface CardRequirementInterface {
   type: CardType;
   subtype: CardSubtype;
-  quanitity: number;
+  quantity: number;
 }

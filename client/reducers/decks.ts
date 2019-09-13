@@ -1,19 +1,34 @@
 import { SET_ALL_DECKS, SET_DECK, ADD_DECK, REMOVE_DECK, REVERT_DECK }
   from '../actions/decks';
 
-import Card from '../models/cards/card';
+import Recipe from '../models/cards/recipe';
+import CardRequirement from '../models/cards/card_requirement';
 import { Tab } from '../models/enums/tab';
 import { CardType } from '../models/enums/card_type';
 import { CardSubtype } from '../models/enums/card_subtype';
 
 let decks = [
-  new Card({
+  new Recipe({
     id: 0,
     name: "Baby Pie",
     usedIn: Tab.Kitchen,
     type: CardType.Recipe,
-    subtype: null,
-    flavorText: "Small and simple, a good place to start."
+    subtype: CardSubtype.Pie,
+    flavorText: "Small and simple, a good place to start.",
+    complexity: 100,
+    time: 60,
+    requirements: [
+      new CardRequirement({
+        type: CardType.Crust,
+        subtype: null,
+        quanitity: 1
+      }),
+      new CardRequirement({
+        type: CardType.Filling,
+        subtype: null,
+        quanitity: 1
+      })
+    ]
   })
 ];
 

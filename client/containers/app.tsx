@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import Card from '../models/cards/card';
+import Recipe from '../models/cards/recipe';
 import { utils } from '../models/utils';
 
 class App extends Component {
@@ -11,7 +11,7 @@ class App extends Component {
   }
   props: any;
   render() {
-    let card: Card = this.props.decks.decks[0];
+    let card: Recipe = this.props.decks.decks[0];
     return (
       <div className="card-container">
         <div className="card">
@@ -20,16 +20,13 @@ class App extends Component {
               <div>{card.name}</div>
             </div>
             <div className="card-header-bottom">
-              {utils.toFirstUpperCase(card.type)}
-              {card.subtype}
+              {card.getTypesLabel()}
             </div>
           </div>
           <div className="card-body">
-            {`Complexity: *
-            Time: 1 minute
-            Requires:
-              1 Crust
-              1 Filling`}
+            {card.getDescription().map((line: string) => {
+              return <div key={line}>{line}</div>
+            })}
           </div>
           <div className="card-footer">
             {card.flavorText}

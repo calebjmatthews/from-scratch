@@ -9,6 +9,7 @@ import App from './containers/app';
 
 import './styles/root.css';
 import './styles/card.css';
+import './styles/kitchen.css';
 
 // @ts-ignore
 const createStoreWithMiddleware = applyMiddleware(createStore);

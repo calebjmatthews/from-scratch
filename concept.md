@@ -19,7 +19,7 @@
   - Flush: +10%, five of all same filling
   - Full house: +20%, 3 one filling and 2 of a second filling
   - Straight: +30%, five of all different fillings
-- Starting cards are: Baby Pie (1), Factory-made Pie Crust (4), Generic Apple Blend (2), Generic Chocolate Blend (2), Egg Wash (1), Hot Oven (1)
+- Starting cards are: Baby Pie (5), Factory-made Crust (4), Generic Apple Blend (2), Generic Chocolate Blend (2), Egg Wash (1), Hot Oven (1)
 
 # Cards
 Baby Pie
@@ -32,7 +32,7 @@ Baby Pie
     1 Filling
   Flavor Text: Small and simple, a good place to start.
 
-Factory-made Pie Crust
+Factory-made Crust
   Used in: Kitchen
   Type: Crust
   Effects:

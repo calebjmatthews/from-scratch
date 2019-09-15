@@ -38,7 +38,7 @@ libraryConstructor.cardMap.set(
   })
 );
 libraryConstructor.cardQuantities.set(
-  CardName.BabyPie, 1
+  CardName.BabyPie, 5
 );
 
 libraryConstructor.cardMap.set(
@@ -124,7 +124,7 @@ libraryConstructor.cardMap.set(
     usedIn: Tab.Kitchen,
     type: CardType.Topping,
     subtype: null,
-    flavorText: "Finishing with an egg wash gives your crust that wonderful golden color.",
+    flavorText: "Finishing with this gives your crust that wonderful golden color.",
     effects: [
       new CardEffect({
         effectType: CardEffectType.Quality,

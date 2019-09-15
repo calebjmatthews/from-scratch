@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 
-import decksReducer from './decks';
+import kitchenReducer from './kitchen';
 
 const rootReducer = combineReducers({
-  decks: decksReducer
+  kitchen: kitchenReducer
 })
 
 export default rootReducer;

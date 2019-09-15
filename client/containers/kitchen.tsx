@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { chooseRecipe } from '../actions/kitchen';
+import { chooseRecipe, playCookingAction } from '../actions/kitchen';
 
 import Recipe from '../models/cards/recipe';
 import CookingAction from '../models/cards/cooking_action';
 import CardIndv from '../models/cards/card_indv';
+import { Library } from '../models/cards/library';
 import Deck from '../models/cards/deck';
 import KitchenMechanic from '../models/mechanics/kitchen';
 import BakedGoodMechanic from '../models/mechanics/baked_good';
@@ -22,8 +23,15 @@ class Kitchen extends Component {
   }
 
   clickCard(id: number) {
-    if (this.props.kitchen.gameState == GameState.RecipeSelect) {
-      this.props.chooseRecipe(id, this.props.kitchen.recipeDeck);
+    let kitchen = this.props.kitchen;
+    switch(kitchen.gameState) {
+      case GameState.RecipeSelect:
+        this.props.chooseRecipe(id, kitchen.recipeDeck);
+        break;
+      case GameState.CookingActions:
+        this.props.playCookingAction(id, kitchen.cookingActionDeck,
+          kitchen.bakedGoods[kitchen.bakedGoods.length-1], library);
+        break;
     }
   }
 
@@ -107,14 +115,16 @@ class Kitchen extends Component {
 interface KitchenProps {
   kitchen: KitchenMechanic;
   chooseRecipe(id: number, recipeDeck: Deck): any;
+  playCookingAction(id: number, cookingActionDeck: Deck,
+    bakedGoodMechanic: BakedGoodMechanic, library: Library): any;
 }
 
 function mapStateToProps({ kitchen }) {
   return { kitchen }
 }
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ chooseRecipe }, dispatch)
+function mapDispatchToProps(dispatch: any) {
+  return bindActionCreators({ chooseRecipe, playCookingAction }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Kitchen);

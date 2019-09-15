@@ -7,7 +7,7 @@ import { CardSubtype } from '../enums/card_subtype';
 import { CardEffectType } from '../enums/card_effect_type';
 
 export default class CookingAction extends Card implements CookingActionInterface {
-  effects: CardEffect[];
+  effects?: CardEffect[];
 
   constructor(cookingAction: CookingActionInterface) {
     super(cookingAction);
@@ -33,5 +33,5 @@ interface CookingActionInterface {
   subtype: CardSubtype;
   flavorText: string;
 
-  effects: CardEffect[];
+  effects?: CardEffect[];
 }

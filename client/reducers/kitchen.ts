@@ -1,4 +1,4 @@
-import { CHOOSE_RECIPE } from '../actions/kitchen';
+import { CHOOSE_RECIPE, PLAY_COOKING_ACTION } from '../actions/kitchen';
 
 import KitchenMechanic from '../models/mechanics/kitchen';
 import BakedGoodMechanic from '../models/mechanics/baked_good';
@@ -21,6 +21,13 @@ export default function
         recipeDeck: action.recipeDeck
       });
       break;
+    case PLAY_COOKING_ACTION:
+      let newBakedGoods = state.bakedGoods;
+      newBakedGoods[newBakedGoods.length-1] = action.bakedGoodMechanic;
+      return <any>Object.assign({}, state, {
+        bakedGoods: newBakedGoods,
+        cookingActionDeck: action.cookingActionDeck
+      });
 		default:
 			return state;
 	}

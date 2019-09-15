@@ -5,6 +5,7 @@ export default class BakedGoodMechanic implements BakedGoodMechanicInterface {
   time: number;
   timeMultiplier: number;
   completion: number;
+  premiumChance: number;
   actionsUsed: string[];
 
   constructor(bakedGoodMechanic: BakedGoodMechanicInterface) {
@@ -19,5 +20,6 @@ interface BakedGoodMechanicInterface {
   time: number;
   timeMultiplier: number;
   completion: number;
+  premiumChance: number;
   actionsUsed: string[];
 }

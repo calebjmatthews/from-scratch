@@ -1,20 +1,23 @@
 import Deck from '../models/cards/deck';
 import CardIndv from '../models/cards/card_indv';
 import { CardName } from '../models/enums/card_name';
+import { utils } from '../models/utils';
 
 export let startingRecipeDeck = new Deck({
-  cards: [
+  drawPile: [
     new CardIndv({ id: 0, name: CardName.BabyPie }),
     new CardIndv({ id: 1, name: CardName.BabyPie }),
     new CardIndv({ id: 2, name: CardName.BabyPie }),
     new CardIndv({ id: 3, name: CardName.BabyPie }),
     new CardIndv({ id: 4, name: CardName.BabyPie })
   ],
-  discard: []
+  hand: [],
+  discardPile: []
 });
+startingRecipeDeck = startingRecipeDeck.drawCards(5);
 
 export let startingCookingActionDeck = new Deck({
-  cards: [
+  drawPile: [
     new CardIndv({ id: 5, name: CardName.FactoryMadeCrust }),
     new CardIndv({ id: 6, name: CardName.FactoryMadeCrust }),
     new CardIndv({ id: 7, name: CardName.FactoryMadeCrust }),
@@ -26,5 +29,8 @@ export let startingCookingActionDeck = new Deck({
     new CardIndv({ id: 13, name: CardName.EggWash }),
     new CardIndv({ id: 14, name: CardName.HotOven })
   ],
-  discard: []
-})
+  hand: [],
+  discardPile: []
+});
+startingCookingActionDeck.drawPile = utils.shuffle(startingCookingActionDeck.drawPile);
+startingCookingActionDeck = startingCookingActionDeck.drawCards(3);

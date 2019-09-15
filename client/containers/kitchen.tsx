@@ -54,10 +54,10 @@ class Kitchen extends Component {
     return (
       <div className="kitchen">
         <div className="status-container">
-          
+
         </div>
         <div className="card-container">
-          {this.props.kitchen.recipeDeck.cards.map((cardIndv: CardIndv) => {
+          {this.props.kitchen.recipeDeck.hand.map((cardIndv: CardIndv) => {
             let card: Recipe|CookingAction = library.cardMap.get(cardIndv.name);
             return this.renderCard(card, cardIndv.id);
           })}
@@ -83,7 +83,7 @@ class Kitchen extends Component {
           </div>
         </div>
         <div className="card-container">
-          {this.props.kitchen.cookingActionDeck.cards.map((cardIndv: CardIndv) => {
+          {this.props.kitchen.cookingActionDeck.hand.map((cardIndv: CardIndv) => {
             let card: Recipe|CookingAction = library.cardMap.get(cardIndv.name);
             return this.renderCard(card, cardIndv.id);
           })}

@@ -1,8 +1,9 @@
 import CardIndv from './card_indv';
 
 export default class Deck implements DeckInterface {
-  cards: CardIndv[];
-  discard: CardIndv[];
+  drawPile: CardIndv[];
+  hand: CardIndv[];
+  discardPile: CardIndv[];
 
   constructor(cardIndv: DeckInterface) {
     Object.assign(this, cardIndv);
@@ -10,12 +11,17 @@ export default class Deck implements DeckInterface {
 
   getCardIndv(id: number): CardIndv {
     let cardIndv = null;
-    this.cards.map((card) => {
+    this.drawPile.map((card) => {
       if (card.id == id) {
         cardIndv = card;
       }
     });
-    this.discard.map((card) => {
+    this.hand.map((card) => {
+      if (card.id == id) {
+        cardIndv = card;
+      }
+    });
+    this.discardPile.map((card) => {
       if (card.id == id) {
         cardIndv = card;
       }
@@ -23,22 +29,40 @@ export default class Deck implements DeckInterface {
     return cardIndv;
   }
 
+  drawCards(count: number): Deck {
+    for (let index = 0; index < count; index++) {
+      this.hand.push(this.drawPile.pop());
+    }
+    return this;
+  }
+
   discardCard(cardIndv: CardIndv): Deck {
-    let postCards: CardIndv[] = [];
-    let postDiscard: CardIndv[] = this.discard.slice();
-    this.cards.map((card, index) => {
+    let postDraw: CardIndv[] = [];
+    let postHand: CardIndv[] = [];
+    let postDiscard: CardIndv[] = this.discardPile.slice();
+    this.drawPile.map((card, index) => {
       if (card.id != cardIndv.id) {
-        postCards.push(card);
+        postDraw.push(card);
       }
       else {
         postDiscard.push(cardIndv);
       }
     });
-    return new Deck({cards: postCards, discard: postDiscard});
+    this.hand.map((card, index) => {
+      if (card.id != cardIndv.id) {
+        postHand.push(card);
+      }
+      else {
+        postDiscard.push(cardIndv);
+      }
+    });
+
+    return new Deck({drawPile: postDraw, hand: postHand, discardPile: postDiscard});
   }
 }
 
 interface DeckInterface {
-  cards: CardIndv[];
-  discard: CardIndv[];
+  drawPile: CardIndv[];
+  hand: CardIndv[];
+  discardPile: CardIndv[];
 }

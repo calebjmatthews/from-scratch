@@ -21,25 +21,47 @@
   - Straight: +30%, five of all different fillings
 - Starting cards are: Baby Pie (5), Factory-made Crust (4), Generic Apple Blend (2), Generic Chocolate Blend (2), Egg Wash (1), Hot Oven (1)
 
+# Possible effects for cards
+- Increase/decrease quality
+- Increase/decrease completion
+- Increase/decrease premium chance
+- Increase/decrease cooking time
+- Draw/discard cards from hand
+- Increase/reduce quality multiplier
+- Increase/reduce completion multiplier
+- Act as a wildcard for recipe requirements
+- Add cards to the deck
+- Move cards from discard to deck
+
 # Cards
 Baby Pie
   Used in: Kitchen
   Type: Recipe (Pie)
-  Complexity: *
+  Complexity: **
   Time: 1 minute
   Requires:
     1 Crust
     1 Filling
-  Flavor Text: Small and simple, a good place to start.
+  Flavor text: Small and simple, a good place to start.
+
+Lattice Pie
+  Used in: Kitchen
+  Type: Recipe (Pie)
+  Complexity: ***
+  Time: 2 minutes
+  Requires:
+    2 Crust
+    1 Filling
+  Flavor text:
 
 Factory-made Crust
   Used in: Kitchen
   Type: Crust
   Effects:
     5 Quality
-    50 Completion
+    40-60 Completion
     -50 Cooking time
-  Flavor Text: Tasteless, but pre-baked.
+  Flavor text: Tasteless, but pre-baked.
 
 Generic Apple Blend
   Used in: Kitchen
@@ -74,6 +96,86 @@ Hot Oven
     -50 Cooking time
     Discard 2
   Flavor text: Turn the oven up, work fast, and clean up the mess later!
+
+Fruit-blended Chocolate
+  Used in: Kitchen
+  Type: Filling (Chocolate)
+  Effects:
+    Discard any number of fruit cards, for each discarded:
+    20 Quality
+    30 Completion
+  Flavor text: The fruit flavor is lost in the chocolate, but it's incredibly rich.
+
+Blueberry Jam
+  Used in: Kitchen
+  Type: Filling (Berry)
+  Effects:
+    5 Quality
+    30-50 Completion
+    Draw two cards
+  Flavor text: Crammed full of so many blueberries it's about to burst.
+
+Key Lime Custard
+  Used in: Kitchen
+  Type: Filling (Citrus)
+  Effects:
+    30 Quality
+    70-90 Completion
+    10% Premium chance
+  Flavor text: A dominating flavor, but can turn out marvelously in the right hands.
+
+Strawberry Preserves
+  Used in: Kitchen
+  Type: Filling (Berry)
+  Effects:
+    15 Quality
+    50-70 Completion
+    Move a card from the discard pile to your hand
+  Flavor text: Sweet and mellow, strawberries pair well with other flavors.
+
+Slow and Steady
+  Used in: Kitchen
+  Type: Technique
+  Effects:
+    25 Cooking time
+    15% Quality multiplier
+    5% Premium chance
+  Flavor text: Double check your measurements, mise en place.
+
+Chocolate Mousse
+  Used in: Kitchen
+  Type: Filling (Chocolate)
+  Effects:
+    10 Quality
+    40-60 Completion
+    Shuffle 2 "Chocolate Fluff" cards into your deck.
+  Flavor text: The whipped cream increases the volume like you wouldn't believe.
+
+Chocolate Fluff
+  Used in: Kitchen
+  Type: Topping (Chocolate)
+  Effects:
+    5 Quality
+    10-30 Completion
+  Flavor text: Simple, dark, and creamy.
+
+Flakey Crust
+  Used in: Kitchen
+  Type: Crust
+  Effects:
+    50% Quality multiplier
+    70-90 Completion
+  Flavor text: It takes time, but a perfectly flakey crust makes it all taste better.
+
+Delicate Crust
+  Used in: Kitchen
+  Type: Crust
+  Effects:
+    20 Quality
+    10-30 Completion
+    50% Completion multiplier
+  Flavor text: Gracefully thin, but take care to work carefully around it.
+
 
 # General interface:
 - Thin bar on left with available areas, beginning with Kitchen and Phone

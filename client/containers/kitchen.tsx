@@ -127,7 +127,7 @@ class Kitchen extends Component {
       <div className="card" onClick={() => this.clickCard(null)}>
         <div className="card-header">
           <div className="card-header-top">
-            <div>{utils.toFirstUpperCase(bakedGood.recipeName)}</div>
+            <div>{bakedGood.finishedName}</div>
           </div>
           <div className="card-header-bottom">
             Success!

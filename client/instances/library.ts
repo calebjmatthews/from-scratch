@@ -22,7 +22,7 @@ libraryConstructor.cardMap.set(
     subtype: CardSubtype.Pie,
     flavorText: "Small and simple, a good place to start.",
     complexity: 100,
-    time: 60,
+    baseTime: 60,
     requirements: [
       new CardRequirement({
         type: CardType.Crust,

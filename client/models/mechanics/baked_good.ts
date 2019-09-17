@@ -10,6 +10,7 @@ export default class BakedGoodMechanic implements BakedGoodMechanicInterface {
   completion: number;
   premiumChance: number;
   actionsUsed: string[];
+  finishedName: string;
   failure: boolean;
   missedRequirements: CardRequirement[];
 
@@ -21,12 +22,12 @@ export default class BakedGoodMechanic implements BakedGoodMechanicInterface {
     let lines: string[] = [];
     let qualityLine: string = ('Quality: ' + this.quality);
     if (this.qualityMultiplier != 1) {
-      qualityLine += ('x' + Math.floor((this.qualityMultiplier / 100)));
+      qualityLine += ('x' + this.qualityMultiplier);
     }
     lines.push(qualityLine);
     let timeLine: string = ('Time: ' + utils.formatDuration(this.time * 1000));
     if (this.timeMultiplier != 1) {
-      timeLine += ('x' + Math.floor((this.timeMultiplier / 100)));
+      timeLine += ('x' + this.timeMultiplier);
     }
     lines.push(timeLine);
     if (this.premiumChance > 0) {
@@ -63,6 +64,7 @@ interface BakedGoodMechanicInterface {
   completion: number;
   premiumChance: number;
   actionsUsed: string[];
+  finishedName: string;
   failure: boolean;
   missedRequirements: CardRequirement[];
 }

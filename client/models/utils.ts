@@ -6,6 +6,34 @@ class Utils {
     return (aString.slice(0,1).toUpperCase() + aString.slice(1).toLowerCase());
   }
 
+  toAllFirstUpperCase(aString: string): string {
+    aString = aString.replace(/_/g, ' ');
+    let spaceIndeces = this.getIndicesOf(aString, ' ');
+    console.log('spaceIndeces');
+    console.log(spaceIndeces);
+    aString = aString.slice(0,1).toUpperCase() + aString.slice(1).toLowerCase();
+    spaceIndeces.map((index) => {
+      aString = aString.slice(0,(index+1)) +
+        aString.slice((index+1),(index+2)).toUpperCase()
+        + aString.slice(index+2).toLowerCase();
+    });
+    return aString;
+  }
+
+  getIndicesOf(str: string, searchStr: string) {
+    if (searchStr.length == 0) {
+      return [];
+    }
+    let startIndex = 0
+    let index: number;
+    let indices: number[] = [];
+    while ((index = str.indexOf(searchStr, startIndex)) > -1) {
+      indices.push(index);
+      startIndex = index + searchStr.length;
+    }
+    return indices;
+}
+
   range(size: number, startAt: number = 0) {
     return [...Array(size).keys()].map((integer) => integer + startAt);
   }

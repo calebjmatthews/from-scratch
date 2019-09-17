@@ -7,6 +7,7 @@ import Recipe from '../cards/recipe';
 import CardRequirement from '../cards/card_requirement';
 import { GameState } from '../enums/game_state';
 import { CardEffectType } from '../enums/card_effect_type';
+import { utils } from '../utils';
 
 export default class KitchenMechanic {
   gameState: GameState;
@@ -31,6 +32,7 @@ export default class KitchenMechanic {
       completion: 0,
       premiumChance: 0,
       actionsUsed: [],
+      finishedName: null,
       failure: false,
       missedRequirements: []
     });
@@ -52,7 +54,12 @@ export default class KitchenMechanic {
           bakedGoodMechanic.completion += effect.quantities[0];
           break;
         case CardEffectType.CookingTime:
-          bakedGoodMechanic.time += effect.quantities[0];
+          if (effect.quantities[0] < 0) {
+            bakedGoodMechanic.timeMultiplier *= (Math.abs(effect.quantities[0] / 100));
+          }
+          else {
+            bakedGoodMechanic.timeMultiplier += (effect.quantities[0] / 100);
+          }
           break;
         case CardEffectType.Discard:
           break;
@@ -88,7 +95,10 @@ export default class KitchenMechanic {
       actionsUsed.push(library.cardMap.get(actionName));
     });
 
-    let requirements: CardRequirement[] = recipe.requirements.slice();
+    let requirements: CardRequirement[] = [];
+    recipe.requirements.map((requirement) => {
+      requirements.push(new CardRequirement(requirement));
+    });
     actionsUsed.map((actionUsed) => {
       requirements.map((requirement) => {
         if ((requirement.type != null && requirement.subtype != null)
@@ -120,6 +130,20 @@ export default class KitchenMechanic {
       bakedGoodMechanic.time = 0;
       bakedGoodMechanic.timeMultiplier = 1;
       bakedGoodMechanic.premiumChance = 0;
+    }
+    else {
+      let finishedName = '';
+      bakedGoodMechanic.finishedName = '';
+      actionsUsed.map((actionUsed) => {
+        if (actionUsed.subtype != null
+          && finishedName.includes(actionUsed.subtype) == false) {
+          finishedName += (actionUsed.subtype + ' ');
+        }
+      });
+      finishedName += (' ' + bakedGoodMechanic.recipeName);
+      bakedGoodMechanic.finishedName = utils.toAllFirstUpperCase(finishedName);
+
+      bakedGoodMechanic.time = recipe.baseTime;
     }
 
     return bakedGoodMechanic;

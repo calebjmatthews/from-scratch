@@ -14,6 +14,8 @@ export default class KitchenMechanic {
   bakedGoods: BakedGoodMechanic[];
   recipeDeck: Deck;
   cookingActionDeck: Deck;
+  batchTime: number;
+  timeElapsed: number;
 
   constructor(kitchenMechanic: KitchenMechanicInterface = null) {
     if (kitchenMechanic != null) {
@@ -82,6 +84,10 @@ export default class KitchenMechanic {
       gameState = GameState.GoodResults;
     }
 
+    if (gameState == GameState.GoodResults && bakedGoodMechanics.length == 5) {
+      gameState = GameState.BatchResults;
+    }
+
     return {
       bakedGoodMechanics: bakedGoodMechanics,
       cookingActionDeck: postCookingActionDeck,
@@ -89,7 +95,8 @@ export default class KitchenMechanic {
     }
   }
 
-  finishGood(recipe: Recipe, bakedGoodMechanic: BakedGoodMechanic, library: Library) {
+  finishGood(recipe: Recipe, bakedGoodMechanic: BakedGoodMechanic, library: Library):
+    BakedGoodMechanic {
     let actionsUsed: CookingAction[] = [];
     bakedGoodMechanic.actionsUsed.map((actionName: string) => {
       actionsUsed.push(library.cardMap.get(actionName));
@@ -140,13 +147,46 @@ export default class KitchenMechanic {
           finishedName += (actionUsed.subtype + ' ');
         }
       });
-      finishedName += (' ' + bakedGoodMechanic.recipeName);
+      finishedName += bakedGoodMechanic.recipeName;
       bakedGoodMechanic.finishedName = utils.toAllFirstUpperCase(finishedName);
 
       bakedGoodMechanic.time = recipe.baseTime;
     }
 
     return bakedGoodMechanic;
+  }
+
+  getBatchDescription(bakedGoodMechanics: BakedGoodMechanic[]):
+    string[] {
+    let lines: string[] = [];
+    let res = this.getBatchValues(bakedGoodMechanics);
+
+    lines.push('Quality: ' + res.totalQuality);
+    lines.push('Time: ' + utils.formatDuration(res.totalTime * 1000));
+    let premiumLine = 'Premium chances: ';
+    res.premiumChances.map((premiumChance) => {
+      premiumLine += premiumChance + '%, ';
+    });
+    premiumLine = premiumLine.slice(0, -2);
+    lines.push(premiumLine);
+
+    return lines;
+  }
+
+  getBatchValues(bakedGoodMechanics: BakedGoodMechanic[]): any {
+    let totalQuality: number = 0;
+    let totalTime: number = 0;
+    let premiumChances: number[] = [];
+    bakedGoodMechanics.map((bgm) => {
+      totalQuality += (bgm.quality * bgm.qualityMultiplier);
+      totalTime += (bgm.time * bgm.timeMultiplier);
+      premiumChances.push(bgm.premiumChance);
+    });
+    return {
+      totalQuality: totalQuality,
+      totalTime: totalTime,
+      premiumChances: premiumChances
+    };
   }
 }
 
@@ -155,4 +195,6 @@ interface KitchenMechanicInterface {
   bakedGoods: BakedGoodMechanic[];
   recipeDeck: Deck;
   cookingActionDeck: Deck;
+  batchTime: number;
+  timeElapsed: number;
 }

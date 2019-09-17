@@ -11,7 +11,9 @@ export default function
     gameState: GameState.RecipeSelect,
     bakedGoods: [],
     recipeDeck: startingRecipeDeck,
-    cookingActionDeck: startingCookingActionDeck
+    cookingActionDeck: startingCookingActionDeck,
+    batchTime: 0,
+    timeElapsed: 0
   }),
     action = null) {
 	switch(action.type) {

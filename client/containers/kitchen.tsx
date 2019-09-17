@@ -169,6 +169,38 @@ class Kitchen extends Component {
     );
   }
 
+  renderBatchResults() {
+    let batchDescription = new KitchenMechanic()
+      .getBatchDescription(this.props.kitchen.bakedGoods);
+    return (
+      <div className="kitchen">
+        <div className="status-container">
+
+        </div>
+        <div className="card-container">
+          <div className="card">
+            <div className="card-header">
+              <div className="card-header-top">
+                Prep finished!
+              </div>
+            </div>
+            <div className="card-body">
+              <div>Batch totals:</div>
+              {batchDescription.map((line: string) => {
+                return <div key={line}>{line}</div>
+              })}
+            </div>
+            <div className="card-footer">
+              <button className="button-block" onClick={() => this.clickCard(null)}>
+                Let's get cooking!
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   render() {
     switch(this.props.kitchen.gameState) {
       case GameState.RecipeSelect:
@@ -179,6 +211,9 @@ class Kitchen extends Component {
         break;
       case GameState.GoodResults:
         return this.renderGoodResult();
+        break;
+      case GameState.BatchResults:
+        return this.renderBatchResults();
         break;
     }
   }

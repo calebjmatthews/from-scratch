@@ -40,7 +40,7 @@ Baby Pie
   Complexity: **
   Time: 1 minute
   Requires:
-    1 Crust
+    1 Pastry
     1 Filling
   Flavor text: Small and simple, a good place to start.
 
@@ -50,18 +50,18 @@ Lattice Pie
   Complexity: ***
   Time: 2 minutes
   Requires:
-    2 Crust
+    2 Pastry
     1 Filling
-  Flavor text:
+  Flavor text: The crossed latice crust is equal parts pretty and crisp.
 
-Factory-made Crust
+Factory-made Pastry
   Used in: Kitchen
-  Type: Crust
+  Type: Pastry
   Effects:
     5 Quality
     40-60 Completion
     -50 Cooking time
-  Flavor text: Tasteless, but pre-baked.
+  Flavor text: Tasteless, but pre-baked pastry sheet.
 
 Generic Apple Blend
   Used in: Kitchen
@@ -159,23 +159,30 @@ Chocolate Fluff
     10-30 Completion
   Flavor text: Simple, dark, and creamy.
 
-Flakey Crust
+Flakey Pastry
   Used in: Kitchen
-  Type: Crust
+  Type: Pastry
   Effects:
-    50% Quality multiplier
+    50 Cooking time
     70-90 Completion
-  Flavor text: It takes time, but a perfectly flakey crust makes it all taste better.
+    50% Quality multiplier
+  Flavor text: It takes time, but a perfectly flakey pastry makes it all taste better.
 
-Delicate Crust
+Filo Pastry
   Used in: Kitchen
-  Type: Crust
+  Type: Pastry
   Effects:
     20 Quality
     10-30 Completion
     50% Completion multiplier
-  Flavor text: Gracefully thin, but take care to work carefully around it.
+  Flavor text: Gracefully thin and layered, take care to work carefully around it.
 
+Change of Perspective
+  Used in: Kitchen
+  Type: Technique
+  Effects:
+    If completion is > 75%, decrease completion by 30
+  Flavor text: Now that you look from another angle, you could fit in more, right?
 
 # General interface:
 - Thin bar on left with available areas, beginning with Kitchen and Phone

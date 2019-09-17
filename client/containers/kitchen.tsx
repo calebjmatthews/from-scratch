@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { chooseRecipe, playCookingAction } from '../actions/kitchen';
+import { chooseRecipe, playCookingAction, acknowledgeGoodResult }
+  from '../actions/kitchen';
 
 import Recipe from '../models/cards/recipe';
 import CookingAction from '../models/cards/cooking_action';
@@ -30,8 +31,10 @@ class Kitchen extends Component {
         break;
       case GameState.CookingActions:
         this.props.playCookingAction(id, kitchen.cookingActionDeck,
-          kitchen.bakedGoods[kitchen.bakedGoods.length-1], library);
+          kitchen.bakedGoods, library);
         break;
+      case GameState.GoodResults:
+        this.props.acknowledgeGoodResult();
     }
   }
 
@@ -100,6 +103,72 @@ class Kitchen extends Component {
     );
   }
 
+  renderGoodResult() {
+    let currentBakedGood: BakedGoodMechanic = this.props.kitchen.bakedGoods
+      [this.props.kitchen.bakedGoods.length-1];
+    let cardRender = this.renderResultDescription(currentBakedGood);
+    if (currentBakedGood.failure == true) {
+      cardRender = this.renderFailure(currentBakedGood);
+    }
+    return (
+      <div className="kitchen">
+        <div className="status-container">
+
+        </div>
+        <div className="card-container">
+          {cardRender}
+        </div>
+      </div>
+    );
+  }
+
+  renderResultDescription(bakedGood: BakedGoodMechanic) {
+    return (
+      <div className="card" onClick={() => this.clickCard(null)}>
+        <div className="card-header">
+          <div className="card-header-top">
+            <div>{utils.toFirstUpperCase(bakedGood.recipeName)}</div>
+          </div>
+          <div className="card-header-bottom">
+            Success!
+          </div>
+        </div>
+        <div className="card-body">
+          {bakedGood.getResultDescription().map((line: string) => {
+            return <div key={line}>{line}</div>
+          })}
+        </div>
+        <div className="card-footer">
+
+        </div>
+      </div>
+    );
+  }
+
+  renderFailure(bakedGood: BakedGoodMechanic) {
+    return (
+      <div className="card" onClick={() => this.clickCard(null)}>
+        <div className="card-header">
+          <div className="card-header-top">
+            <div>{utils.toFirstUpperCase(bakedGood.recipeName)}</div>
+          </div>
+          <div className="card-header-bottom">
+            Failure
+          </div>
+        </div>
+        <div className="card-body">
+          <div>Missing:</div>
+          {bakedGood.getFailureDescription().map((line: string) => {
+            return <div key={line}>{line}</div>
+          })}
+        </div>
+        <div className="card-footer">
+
+        </div>
+      </div>
+    );
+  }
+
   render() {
     switch(this.props.kitchen.gameState) {
       case GameState.RecipeSelect:
@@ -107,6 +176,9 @@ class Kitchen extends Component {
         break;
       case GameState.CookingActions:
         return this.renderCookingActions();
+        break;
+      case GameState.GoodResults:
+        return this.renderGoodResult();
         break;
     }
   }
@@ -116,7 +188,8 @@ interface KitchenProps {
   kitchen: KitchenMechanic;
   chooseRecipe(id: number, recipeDeck: Deck): any;
   playCookingAction(id: number, cookingActionDeck: Deck,
-    bakedGoodMechanic: BakedGoodMechanic, library: Library): any;
+    bakedGoodMechanics: BakedGoodMechanic[], library: Library): any;
+  acknowledgeGoodResult(): any;
 }
 
 function mapStateToProps({ kitchen }) {
@@ -124,7 +197,8 @@ function mapStateToProps({ kitchen }) {
 }
 
 function mapDispatchToProps(dispatch: any) {
-  return bindActionCreators({ chooseRecipe, playCookingAction }, dispatch)
+  return bindActionCreators({ chooseRecipe, playCookingAction, acknowledgeGoodResult },
+    dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Kitchen);

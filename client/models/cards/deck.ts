@@ -1,4 +1,5 @@
 import CardIndv from './card_indv';
+import { utils } from '../utils';
 
 export default class Deck implements DeckInterface {
   drawPile: CardIndv[];
@@ -31,6 +32,19 @@ export default class Deck implements DeckInterface {
 
   drawCards(count: number): Deck {
     for (let index = 0; index < count; index++) {
+      this.drawCard();
+    }
+    return this;
+  }
+
+  drawCard(): Deck {
+    if (this.drawPile.length > 0) {
+      this.hand.push(this.drawPile.pop());
+    }
+    else {
+      this.drawPile = this.discardPile.slice();
+      this.drawPile = utils.shuffle(this.drawPile);
+      this.discardPile = [];
       this.hand.push(this.drawPile.pop());
     }
     return this;

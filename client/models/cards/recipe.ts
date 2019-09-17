@@ -6,9 +6,9 @@ import { CardType } from '../enums/card_type';
 import { CardSubtype } from '../enums/card_subtype';
 
 export default class Recipe extends Card implements RecipeInterface {
-  complexity: number;
-  time: number;
-  requirements: CardRequirement[];
+  complexity?: number;
+  time?: number;
+  requirements?: CardRequirement[];
 
   constructor(recipe: RecipeInterface) {
     super(recipe);
@@ -43,7 +43,7 @@ interface RecipeInterface {
   subtype: CardSubtype;
   flavorText: string;
 
-  complexity: number;
-  time: number;
-  requirements: CardRequirement[];
+  complexity?: number;
+  time?: number;
+  requirements?: CardRequirement[];
 }

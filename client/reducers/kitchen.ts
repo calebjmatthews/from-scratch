@@ -1,4 +1,5 @@
-import { CHOOSE_RECIPE, PLAY_COOKING_ACTION } from '../actions/kitchen';
+import { CHOOSE_RECIPE, PLAY_COOKING_ACTION, ACKNOWLEDGE_GOOD_RESULT }
+  from '../actions/kitchen';
 
 import KitchenMechanic from '../models/mechanics/kitchen';
 import BakedGoodMechanic from '../models/mechanics/baked_good';
@@ -16,18 +17,21 @@ export default function
 	switch(action.type) {
     case CHOOSE_RECIPE:
       return <any>Object.assign({}, state, {
-        gameState: GameState.CookingActions,
         bakedGoods: [...state.bakedGoods, action.bakedGoodMechanic],
-        recipeDeck: action.recipeDeck
+        recipeDeck: action.recipeDeck,
+        gameState: action.gameState
       });
       break;
     case PLAY_COOKING_ACTION:
-      let newBakedGoods = state.bakedGoods;
-      newBakedGoods[newBakedGoods.length-1] = action.bakedGoodMechanic;
       return <any>Object.assign({}, state, {
-        bakedGoods: newBakedGoods,
-        cookingActionDeck: action.cookingActionDeck
+        bakedGoods: action.bakedGoodMechanics,
+        cookingActionDeck: action.cookingActionDeck,
+        gameState: action.gameState,
       });
+    case ACKNOWLEDGE_GOOD_RESULT:
+    return <any>Object.assign({}, state, {
+      gameState: action.gameState
+    });
 		default:
 			return state;
 	}

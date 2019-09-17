@@ -4,6 +4,7 @@ import CardIndv from '../cards/card_indv';
 import Deck from '../cards/deck';
 import CookingAction from '../cards/cooking_action';
 import Recipe from '../cards/recipe';
+import CardRequirement from '../cards/card_requirement';
 import { GameState } from '../enums/game_state';
 import { CardEffectType } from '../enums/card_effect_type';
 
@@ -30,6 +31,8 @@ export default class KitchenMechanic {
       completion: 0,
       premiumChance: 0,
       actionsUsed: [],
+      failure: false,
+      missedRequirements: []
     });
     let postRecipeDeck: Deck = recipeDeck.discardCard(recipe);
     return {
@@ -39,9 +42,10 @@ export default class KitchenMechanic {
   }
 
   playCookingAction(id: number, cookingActionDeck: Deck,
-    bakedGoodMechanic: BakedGoodMechanic, library: Library) {
+    bakedGoodMechanics: BakedGoodMechanic[], library: Library) {
     let cardIndv = cookingActionDeck.getCardIndv(id);
     let cookingAction: CookingAction = library.cardMap.get(cardIndv.name);
+    let bakedGoodMechanic = bakedGoodMechanics[bakedGoodMechanics.length-1];
     cookingAction.effects.map((effect) => {
       switch (effect.effectType) {
         case CardEffectType.Completion:
@@ -62,10 +66,63 @@ export default class KitchenMechanic {
     });
     bakedGoodMechanic.actionsUsed.push(cookingAction.name);
     let postCookingActionDeck: Deck = cookingActionDeck.discardCard(cardIndv);
-    return {
-      bakedGoodMechanic: bakedGoodMechanic,
-      cookingActionDeck: postCookingActionDeck
+    postCookingActionDeck.drawCard();
+
+    let gameState: string = GameState.CookingActions;
+    let recipe: Recipe = library.cardMap.get(bakedGoodMechanic.recipeName);
+    if (bakedGoodMechanic.completion >= recipe.complexity) {
+      bakedGoodMechanic = this.finishGood(recipe, bakedGoodMechanic, library);
+      gameState = GameState.GoodResults;
     }
+
+    return {
+      bakedGoodMechanics: bakedGoodMechanics,
+      cookingActionDeck: postCookingActionDeck,
+      gameState: gameState
+    }
+  }
+
+  finishGood(recipe: Recipe, bakedGoodMechanic: BakedGoodMechanic, library: Library) {
+    let actionsUsed: CookingAction[] = [];
+    bakedGoodMechanic.actionsUsed.map((actionName: string) => {
+      actionsUsed.push(library.cardMap.get(actionName));
+    });
+
+    let requirements: CardRequirement[] = recipe.requirements.slice();
+    actionsUsed.map((actionUsed) => {
+      requirements.map((requirement) => {
+        if ((requirement.type != null && requirement.subtype != null)
+          && (requirement.type == actionUsed.type
+          && requirement.subtype == actionUsed.subtype)) {
+          requirement.quantity--;
+        }
+        else if ((requirement.type != null && requirement.subtype == null)
+          && (requirement.type == actionUsed.type)) {
+          requirement.quantity--;
+        }
+        else if ((requirement.type == null && requirement.subtype != null)
+          && (requirement.subtype == actionUsed.subtype)) {
+          requirement.quantity--;
+        }
+      });
+    });
+
+    requirements.map((requirement) => {
+      if (requirement.quantity > 0) {
+        bakedGoodMechanic.failure = true;
+        bakedGoodMechanic.missedRequirements.push(requirement);
+      }
+    });
+
+    if (bakedGoodMechanic.failure == true) {
+      bakedGoodMechanic.quality = 0;
+      bakedGoodMechanic.qualityMultiplier = 1;
+      bakedGoodMechanic.time = 0;
+      bakedGoodMechanic.timeMultiplier = 1;
+      bakedGoodMechanic.premiumChance = 0;
+    }
+
+    return bakedGoodMechanic;
   }
 }
 

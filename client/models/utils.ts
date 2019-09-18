@@ -9,8 +9,6 @@ class Utils {
   toAllFirstUpperCase(aString: string): string {
     aString = aString.replace(/_/g, ' ');
     let spaceIndeces = this.getIndicesOf(aString, ' ');
-    console.log('spaceIndeces');
-    console.log(spaceIndeces);
     aString = aString.slice(0,1).toUpperCase() + aString.slice(1).toLowerCase();
     spaceIndeces.map((index) => {
       aString = aString.slice(0,(index+1)) +

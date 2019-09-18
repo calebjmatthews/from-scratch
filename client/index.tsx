@@ -5,7 +5,7 @@ import { createStore, applyMiddleware } from 'redux';
 import { BrowserRouter } from 'react-router-dom';
 import configureStore from './store';
 const store = configureStore();
-import App from './containers/app';
+import App from './components/app';
 
 import './styles/root.css';
 import './styles/card.css';

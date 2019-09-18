@@ -33,10 +33,39 @@ export function playCookingAction(id: number, cookingActionDeck: Deck,
   }
 }
 
-export const ACKNOWLEDGE_GOOD_RESULT = 'ACKNOWLEDGE_GOOD_RESULT';
+export const BEGIN_COOKING_WAITING = 'BEGIN_COOKING_WAITING';
+export function beginCookingWaiting(kitchen: KitchenMechanic) {
+  let res = kitchen.getBatchValues(kitchen.bakedGoods);
+  let timeRemainingLabel = kitchen.refreshTimeRemainingLabel(res.totalTime, 0);
+  return {
+    type: BEGIN_COOKING_WAITING,
+    gameState: GameState.CookingWaiting,
+    timeRemainingLabel: timeRemainingLabel,
+    batchTime: res.totalTime
+  }
+}
+
+export const COOKING_TICK = 'COOKING_TICK';
+export function cookingTick(kitchen: KitchenMechanic) {
+  let res = kitchen.cookingTick(kitchen);
+  return {
+    type: COOKING_TICK,
+    timeElapsed: res.timeElapsed,
+    timeRemainingLabel: res.timeRemainingLabel,
+    gameState: res.gameState
+  }
+}
+
+export const SET_GAME_STATE = 'SET_GAME_STATE';
 export function acknowledgeGoodResult() {
   return {
-    type: ACKNOWLEDGE_GOOD_RESULT,
+    type: SET_GAME_STATE,
     gameState: GameState.RecipeSelect
+  }
+}
+export function finishCookingWaiting() {
+  return {
+    type: SET_GAME_STATE,
+    gameState: GameState.CookingFinished
   }
 }

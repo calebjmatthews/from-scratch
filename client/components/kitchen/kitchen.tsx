@@ -6,8 +6,9 @@ import RecipeSelect from './recipe_select';
 import CookingActions from './cooking_actions';
 import GoodResult from './good_result';
 import BatchResults from './batch_results';
-import { chooseRecipe, playCookingAction, acknowledgeGoodResult }
-  from '../../actions/kitchen';
+import CookingWaiting from './cooking_waiting';
+import { chooseRecipe, playCookingAction, acknowledgeGoodResult,
+  beginCookingWaiting, finishCookingWaiting, cookingTick } from '../../actions/kitchen';
 
 import Recipe from '../../models/cards/recipe';
 import CookingAction from '../../models/cards/cooking_action';
@@ -25,6 +26,14 @@ class Kitchen extends Component {
 
   componentDidMount() {
     this.clickCard = this.clickCard.bind(this);
+    setInterval(() => {
+      if (this.props.kitchen.gameState == GameState.CookingWaiting) {
+        let res = this.props.cookingTick(this.props.kitchen);
+        if (res.gameState == GameState.CookingFinished) {
+          this.props.finishCookingWaiting();
+        }
+      }
+    }, 1000);
   }
 
   clickCard(id: number): void {
@@ -39,6 +48,10 @@ class Kitchen extends Component {
         break;
       case GameState.GoodResults:
         this.props.acknowledgeGoodResult();
+        break;
+      case GameState.BatchResults:
+        this.props.beginCookingWaiting(this.props.kitchen);
+        break;
     }
   }
 
@@ -63,11 +76,16 @@ class Kitchen extends Component {
         );
         break;
       case GameState.BatchResults:
-      return (
-        <BatchResults clickCard={this.clickCard.bind(this)}
-          kitchen={this.props.kitchen} />
-      );
+        return (
+          <BatchResults clickCard={this.clickCard.bind(this)}
+            kitchen={this.props.kitchen} />
+        );
         break;
+      case GameState.CookingWaiting:
+        return (
+          <CookingWaiting clickCard={this.clickCard.bind(this)}
+            kitchen={this.props.kitchen} />
+        );
     }
   }
 }
@@ -78,6 +96,9 @@ interface KitchenProps {
   playCookingAction(id: number, cookingActionDeck: Deck,
     bakedGoodMechanics: BakedGoodMechanic[], library: Library): any;
   acknowledgeGoodResult(): any;
+  beginCookingWaiting(kitchen: KitchenMechanic): any;
+  finishCookingWaiting(): any;
+  cookingTick(kitchen: KitchenMechanic): any;
 }
 
 function mapStateToProps({ kitchen }) {
@@ -85,8 +106,8 @@ function mapStateToProps({ kitchen }) {
 }
 
 function mapDispatchToProps(dispatch: any) {
-  return bindActionCreators({ chooseRecipe, playCookingAction, acknowledgeGoodResult },
-    dispatch)
+  return bindActionCreators({ chooseRecipe, playCookingAction, acknowledgeGoodResult,
+    beginCookingWaiting, finishCookingWaiting, cookingTick }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Kitchen);

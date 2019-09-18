@@ -16,6 +16,7 @@ export default class KitchenMechanic {
   cookingActionDeck: Deck;
   batchTime: number;
   timeElapsed: number;
+  timeRemainingLabel: string = '';
 
   constructor(kitchenMechanic: KitchenMechanicInterface = null) {
     if (kitchenMechanic != null) {
@@ -164,7 +165,7 @@ export default class KitchenMechanic {
     lines.push('Quality: ' + res.totalQuality);
     lines.push('Time: ' + utils.formatDuration(res.totalTime * 1000));
     let premiumLine = 'Premium chances: ';
-    res.premiumChances.map((premiumChance) => {
+    res.premiumChances.map((premiumChance: number) => {
       premiumLine += premiumChance + '%, ';
     });
     premiumLine = premiumLine.slice(0, -2);
@@ -187,6 +188,26 @@ export default class KitchenMechanic {
       totalTime: totalTime,
       premiumChances: premiumChances
     };
+  }
+
+  cookingTick(kitchen: KitchenMechanic): any {
+    let timeElapsed = kitchen.timeElapsed;
+    timeElapsed++;
+    let timeRemainingLabel = this.refreshTimeRemainingLabel(kitchen.batchTime,
+      timeElapsed);
+    let gameState = GameState.CookingWaiting
+    if (timeElapsed >= kitchen.batchTime) {
+      gameState = GameState.CookingFinished;
+    }
+    return {
+      timeElapsed: timeElapsed,
+      timeRemainingLabel: timeRemainingLabel,
+      gameState: gameState
+    };
+  }
+
+  refreshTimeRemainingLabel(batchTime: number, timeElapsed: number): string {
+    return utils.formatDuration((batchTime - timeElapsed) * 1000);
   }
 }
 

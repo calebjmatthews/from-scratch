@@ -8,7 +8,8 @@ import GoodResult from './good_result';
 import BatchResults from './batch_results';
 import CookingWaiting from './cooking_waiting';
 import { chooseRecipe, playCookingAction, acknowledgeGoodResult,
-  beginCookingWaiting, finishCookingWaiting, cookingTick } from '../../actions/kitchen';
+  beginCookingWaiting, finishCookingWaiting, cookingTick, sellBatch }
+  from '../../actions/kitchen';
 
 import Recipe from '../../models/cards/recipe';
 import CookingAction from '../../models/cards/cooking_action';
@@ -16,7 +17,9 @@ import CardIndv from '../../models/cards/card_indv';
 import { Library } from '../../models/cards/library';
 import Deck from '../../models/cards/deck';
 import KitchenMechanic from '../../models/mechanics/kitchen';
+import PlayerMechanic from '../../models/mechanics/player';
 import BakedGoodMechanic from '../../models/mechanics/baked_good';
+import BatchResultMechanic from '../../models/mechanics/batch_result';
 import { GameState } from '../../models/enums/game_state';
 import { library } from '../../instances/library';
 import { utils } from '../../models/utils';
@@ -52,6 +55,10 @@ class Kitchen extends Component {
       case GameState.BatchResults:
         this.props.beginCookingWaiting(this.props.kitchen);
         break;
+      case GameState.CookingFinished:
+        this.props.sellBatch(this.props.player.money, this.props.kitchen.batchResult,
+          this.props.kitchen.recipeDeck, this.props.kitchen.cookingActionDeck);
+        break;
     }
   }
 
@@ -82,6 +89,7 @@ class Kitchen extends Component {
         );
         break;
       case GameState.CookingWaiting:
+      case GameState.CookingFinished:
         return (
           <CookingWaiting clickCard={this.clickCard.bind(this)}
             kitchen={this.props.kitchen} />
@@ -91,6 +99,7 @@ class Kitchen extends Component {
 }
 
 interface KitchenProps {
+  player: PlayerMechanic;
   kitchen: KitchenMechanic;
   chooseRecipe(id: number, recipeDeck: Deck): any;
   playCookingAction(id: number, cookingActionDeck: Deck,
@@ -99,15 +108,17 @@ interface KitchenProps {
   beginCookingWaiting(kitchen: KitchenMechanic): any;
   finishCookingWaiting(): any;
   cookingTick(kitchen: KitchenMechanic): any;
+  sellBatch(money: number, batchResultMechanic: BatchResultMechanic,
+    recipeDeck: Deck, cookingActionDeck: Deck): any;
 }
 
-function mapStateToProps({ kitchen }) {
-  return { kitchen }
+function mapStateToProps({ kitchen, player }) {
+  return { kitchen, player }
 }
 
 function mapDispatchToProps(dispatch: any) {
   return bindActionCreators({ chooseRecipe, playCookingAction, acknowledgeGoodResult,
-    beginCookingWaiting, finishCookingWaiting, cookingTick }, dispatch)
+    beginCookingWaiting, finishCookingWaiting, cookingTick, sellBatch }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Kitchen);

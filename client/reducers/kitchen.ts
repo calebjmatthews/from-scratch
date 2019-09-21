@@ -1,5 +1,5 @@
 import { CHOOSE_RECIPE, PLAY_COOKING_ACTION, SET_GAME_STATE, BEGIN_COOKING_WAITING,
-  COOKING_TICK } from '../actions/kitchen';
+  COOKING_TICK, SET_COOKING } from '../actions/kitchen';
 
 import KitchenMechanic from '../models/mechanics/kitchen';
 import BakedGoodMechanic from '../models/mechanics/baked_good';
@@ -7,14 +7,8 @@ import { GameState } from '../models/enums/game_state';
 import { startingRecipeDeck, startingCookingActionDeck } from '../instances/decks';
 
 export default function
-  (state: KitchenMechanic = new KitchenMechanic({
-    gameState: GameState.RecipeSelect,
-    bakedGoods: [],
-    recipeDeck: startingRecipeDeck,
-    cookingActionDeck: startingCookingActionDeck,
-    batchTime: 0,
-    timeElapsed: 0
-  }),
+  (state: KitchenMechanic = new KitchenMechanic().blankKitchen(startingRecipeDeck,
+    startingCookingActionDeck),
     action = null) {
 	switch(action.type) {
     case CHOOSE_RECIPE:
@@ -33,7 +27,7 @@ export default function
       break;
     case BEGIN_COOKING_WAITING:
       return new KitchenMechanic(<any>Object.assign({}, state, {
-        batchTime: action.batchTime,
+        batchResult: action.batchResult,
         timeRemainingLabel: action.timeRemainingLabel,
         gameState: action.gameState
       }));
@@ -49,6 +43,9 @@ export default function
       return new KitchenMechanic(<any>Object.assign({}, state, {
         gameState: action.gameState
       }));
+      break;
+    case SET_COOKING:
+      return new KitchenMechanic(action.kitchen);
       break;
 		default:
 			return state;

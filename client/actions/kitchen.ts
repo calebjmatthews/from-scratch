@@ -1,5 +1,6 @@
 import KitchenMechanic from '../models/mechanics/kitchen';
 import BakedGoodMechanic from '../models/mechanics/baked_good';
+import BatchResultMechanic from '../models/mechanics/batch_result';
 import CardIndv from '../models/cards/card_indv';
 import Deck from '../models/cards/deck';
 import CookingAction from '../models/cards/cooking_action';
@@ -7,6 +8,8 @@ import Recipe from '../models/cards/recipe';
 import { Library } from '../models/cards/library';
 import { CardEffectType } from '../models/enums/card_effect_type';
 import { GameState } from '../models/enums/game_state';
+
+import { gainMoney } from './player';
 
 export const CHOOSE_RECIPE = 'CHOOSE_RECIPE';
 export function chooseRecipe(id: number, recipeDeck: Deck) {
@@ -35,13 +38,21 @@ export function playCookingAction(id: number, cookingActionDeck: Deck,
 
 export const BEGIN_COOKING_WAITING = 'BEGIN_COOKING_WAITING';
 export function beginCookingWaiting(kitchen: KitchenMechanic) {
-  let res = kitchen.getBatchValues(kitchen.bakedGoods);
-  let timeRemainingLabel = kitchen.refreshTimeRemainingLabel(res.totalTime, 0);
+  let batchResult = kitchen.formBatchResult(kitchen.bakedGoods);
+  let timeRemainingLabel = kitchen.refreshTimeRemainingLabel(batchResult.totalTime, 0);
   return {
     type: BEGIN_COOKING_WAITING,
     gameState: GameState.CookingWaiting,
     timeRemainingLabel: timeRemainingLabel,
-    batchTime: res.totalTime
+    batchResult: batchResult
+  }
+}
+
+export const SET_GAME_STATE = 'SET_GAME_STATE';
+export function acknowledgeGoodResult() {
+  return {
+    type: SET_GAME_STATE,
+    gameState: GameState.RecipeSelect
   }
 }
 
@@ -56,16 +67,22 @@ export function cookingTick(kitchen: KitchenMechanic) {
   }
 }
 
-export const SET_GAME_STATE = 'SET_GAME_STATE';
-export function acknowledgeGoodResult() {
-  return {
-    type: SET_GAME_STATE,
-    gameState: GameState.RecipeSelect
-  }
-}
 export function finishCookingWaiting() {
   return {
     type: SET_GAME_STATE,
     gameState: GameState.CookingFinished
+  }
+}
+
+export const SET_COOKING = 'SET_COOKING';
+export function sellBatch(money: number, batchResultMechanic: BatchResultMechanic,
+  recipeDeck: Deck, cookingActionDeck: Deck) {
+  return function(dispatch: Function) {
+    dispatch(gainMoney(money, batchResultMechanic.totalQuality));
+    let blankKitchen = new KitchenMechanic().blankKitchen(recipeDeck, cookingActionDeck);
+    return {
+      type: SET_COOKING,
+      kitchen: blankKitchen
+    }
   }
 }

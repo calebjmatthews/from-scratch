@@ -1,4 +1,5 @@
 import BakedGoodMechanic from './baked_good';
+import BatchResultMechanic from './batch_result';
 import { Library } from '../cards/library';
 import CardIndv from '../cards/card_indv';
 import Deck from '../cards/deck';
@@ -14,14 +15,26 @@ export default class KitchenMechanic {
   bakedGoods: BakedGoodMechanic[];
   recipeDeck: Deck;
   cookingActionDeck: Deck;
-  batchTime: number;
   timeElapsed: number;
   timeRemainingLabel: string = '';
+  batchResult: BatchResultMechanic;
 
   constructor(kitchenMechanic: KitchenMechanicInterface = null) {
     if (kitchenMechanic != null) {
       Object.assign(this, kitchenMechanic);
     }
+  }
+
+  blankKitchen(recipeDeck: Deck, cookingActionDeck: Deck): KitchenMechanic {
+    return new KitchenMechanic({
+      gameState: GameState.RecipeSelect,
+      bakedGoods: [],
+      recipeDeck: recipeDeck,
+      cookingActionDeck: cookingActionDeck,
+      timeElapsed: 0,
+      timeRemainingLabel: '',
+      batchResult: null
+    })
   }
 
   chooseRecipe(id: number, recipeDeck: Deck) {
@@ -157,6 +170,12 @@ export default class KitchenMechanic {
     return bakedGoodMechanic;
   }
 
+  formBatchResult(bakedGoodMechanics: BakedGoodMechanic[]) {
+    this.batchResult = new BatchResultMechanic();
+    this.batchResult.formFromBakedGoods(bakedGoodMechanics);
+    return this.batchResult;
+  }
+
   getBatchDescription(bakedGoodMechanics: BakedGoodMechanic[]):
     string[] {
     let lines: string[] = [];
@@ -193,10 +212,10 @@ export default class KitchenMechanic {
   cookingTick(kitchen: KitchenMechanic): any {
     let timeElapsed = kitchen.timeElapsed;
     timeElapsed++;
-    let timeRemainingLabel = this.refreshTimeRemainingLabel(kitchen.batchTime,
-      timeElapsed);
+    let timeRemainingLabel = this.refreshTimeRemainingLabel(
+      kitchen.batchResult.totalTime, timeElapsed);
     let gameState = GameState.CookingWaiting
-    if (timeElapsed >= kitchen.batchTime) {
+    if (timeElapsed >= kitchen.batchResult.totalTime) {
       gameState = GameState.CookingFinished;
     }
     return {
@@ -216,6 +235,7 @@ interface KitchenMechanicInterface {
   bakedGoods: BakedGoodMechanic[];
   recipeDeck: Deck;
   cookingActionDeck: Deck;
-  batchTime: number;
   timeElapsed: number;
+  timeRemainingLabel: string;
+  batchResult: BatchResultMechanic;
 }
